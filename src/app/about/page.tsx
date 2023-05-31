@@ -4,8 +4,16 @@ import { getListPage } from "@/lib/contentParser";
 import { markdownify } from "@/lib/utils/textConverter";
 import SeoMeta from "@/partials/SeoMeta";
 import { RegularPage } from "@/types";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authoptions } from "../api/auth/[...nextauth]/route";
 
-const About = () => {
+const About = async () => {
+  const session = await getServerSession(authoptions);
+  if (!session) {
+    redirect("/signin");
+  }
+
   const data: RegularPage = getListPage("pages/about.md");
   const { frontmatter, content } = data;
   const { title, meta_title, description, image } = frontmatter;
