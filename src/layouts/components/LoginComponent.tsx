@@ -5,16 +5,15 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
-const LoginComponent = ({ providers }: any) => {
+const LoginComponent = ({ authProviders }: any) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
-  const authProviders = Object.values(providers);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const { data } = useSession();
-  if (data?.user) {
+  if (data && data.user) {
     redirect(callbackUrl || "/");
   }
   const handleSubmit = async (e: any) => {
