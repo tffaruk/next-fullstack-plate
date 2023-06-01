@@ -1,6 +1,7 @@
-import axios from "axios";
+import { dbConnect } from "@/lib/dbConnect";
+import Admin from "@/model/user.model";
 import NextAuth from "next-auth";
-import CredentialsProvide from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 export const authoptions = {
   secret: process.env.NEXT_AUTH_SECRET,
@@ -8,29 +9,26 @@ export const authoptions = {
     strategy: "jwt" as any,
   },
   providers: [
-    CredentialsProvide({
+    CredentialsProvider({
       type: "credentials",
 
       credentials: {},
       async authorize(credentials: any, req: any): Promise<any> {
         // Add logic here to look up the user from the credentials supplied
         const { email, password } = credentials;
+        await dbConnect();
 
-        const user = await axios.get("/api/getuser");
+        try {
+          const user = await Admin.find({});
 
-        if (
-          user.data.data.user.map((data: any) => data.email).includes(email) &&
-          user.data.data.user
-            .map((data: any) => data.password)
-            .includes(password)
-        ) {
-          return {
-            email: email,
-
-            // role: res.data.result[0].role,
-          };
+          if (user) {
+            return user;
+          } else {
+            throw new Error("Wrong Credentials!");
+          }
+        } catch (err) {
+          throw new Error("Wrong Credentials!");
         }
-        return null;
       },
     }),
     GoogleProvider({

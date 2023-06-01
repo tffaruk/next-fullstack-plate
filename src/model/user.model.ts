@@ -12,5 +12,5 @@ const userSchema = new Schema<User_Info>({
   },
 });
 
-const Admin = models.Admin || model<User_Info>("Admin", userSchema);
+const Admin = models?.Admin || model<User_Info>("Admin", userSchema);
 export default Admin;
