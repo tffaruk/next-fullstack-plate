@@ -10,7 +10,7 @@ const LoginComponent = ({ providers }: any) => {
     email: "",
     password: "",
   });
-  const authProviders = Object.values(providers as any);
+  const authProviders = Object.values(providers);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const { data } = useSession();
