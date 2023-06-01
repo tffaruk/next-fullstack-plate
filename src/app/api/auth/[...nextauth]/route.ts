@@ -19,7 +19,7 @@ export const authoptions = {
         await dbConnect();
 
         try {
-          const user = await Admin.find({});
+          const user = await Admin.find({ email: email, password: password });
 
           if (user) {
             return user;

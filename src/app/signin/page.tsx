@@ -7,7 +7,7 @@ const SignInPage = async () => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <LoginComponent providers={providers} />
+      <LoginComponent />
     </Suspense>
   );
 };
