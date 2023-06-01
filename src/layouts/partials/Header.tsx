@@ -1,14 +1,13 @@
 "use client";
 
+import { authoptions } from "@/app/api/auth/[...nextauth]/route";
 import Logo from "@/components/Logo";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
 import config from "@/config/config.json";
 import menu from "@/config/menu.json";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { IoSearch } from "react-icons/io5/index.js";
 
 export interface ChildNavigationLink {
   name: string;
@@ -28,6 +27,7 @@ const Header = () => {
   const { navigation_button, settings } = config;
   // get current path
   const pathname = usePathname();
+  const { data } = useSession(authoptions as any);
 
   return (
     <header
@@ -131,24 +131,18 @@ const Header = () => {
             </li>
           )}
         </ul>
-        <button onClick={() => signOut()}>sign out</button>
+
         <div className="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
-          {settings.search && (
-            <Link
-              className="mr-5 inline-block border-r border-border pr-5 text-xl text-dark hover:text-primary dark:border-darkmode-border dark:text-white"
-              href="/search"
-              aria-label="search"
+          {data ? (
+            <button
+              onClick={() => signOut()}
+              className="btn btn-outline-primary btn-sm"
             >
-              <IoSearch />
-            </Link>
-          )}
-          <ThemeSwitcher className="mr-5" />
-          {navigation_button.enable && (
-            <Link
-              className="btn btn-outline-primary btn-sm hidden lg:inline-block"
-              href={navigation_button.link}
-            >
-              {navigation_button.label}
+              Sign out
+            </button>
+          ) : (
+            <Link href="/signup" className="btn btn-outline-primary btn-sm">
+              Sign up
             </Link>
           )}
         </div>
