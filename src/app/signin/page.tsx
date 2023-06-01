@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 const SignInPage = async () => {
   const providers = await getProviders();
-
+  console.log(providers);
   const authProviders = Object.values(providers as any) || {};
   return (
     <Suspense fallback={<div>Loading...</div>}>
