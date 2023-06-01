@@ -5,11 +5,12 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
-const LoginComponent = ({ authProviders }: any) => {
+const LoginComponent = ({ providers }: any) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
+  const authProviders = Object.values(providers as any) || {};
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const { data } = useSession();
