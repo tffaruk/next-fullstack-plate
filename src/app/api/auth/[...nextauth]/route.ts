@@ -1,5 +1,6 @@
 import { dbConnect } from "@/lib/dbConnect";
 import Admin from "@/model/user.model";
+import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -19,10 +20,14 @@ export const authoptions = {
         await dbConnect();
 
         try {
-          const user = await Admin.find({ email: email, password: password });
+          const user = await Admin.findOne({ email: email });
 
           if (user) {
-            return user;
+            if (await bcrypt.compare(password, user.password)) {
+              return user;
+            } else {
+              throw new Error("Wrong Credentials!");
+            }
           } else {
             throw new Error("Wrong Credentials!");
           }
