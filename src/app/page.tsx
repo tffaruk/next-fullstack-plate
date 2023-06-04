@@ -7,7 +7,9 @@ import Testimonials from "@/partials/Testimonials";
 import { Button, Feature } from "@/types";
 import axios from "axios";
 const getUser = async () => {
-  const res = await axios.get("http://localhost:3000/api/user");
+  const res = await axios.get(
+    "https://next-fullstack-plate.vercel.app/api/user"
+  );
   return res;
 };
 const Home = async () => {
