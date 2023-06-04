@@ -1,5 +1,6 @@
 import ImageFallback from "@/components/ImageFallback";
 import { getListPage } from "@/lib/contentParser";
+import { dbConnect } from "@/lib/dbConnect";
 import { markdownify } from "@/lib/utils/textConverter";
 import Admin from "@/model/user.model";
 import CallToAction from "@/partials/CallToAction";
@@ -7,11 +8,14 @@ import SeoMeta from "@/partials/SeoMeta";
 import Testimonials from "@/partials/Testimonials";
 import { Button, Feature } from "@/types";
 const getUser = async () => {
+  await dbConnect();
   const res = await Admin.find({});
   return res;
 };
+
 const Home = async () => {
   const res = await getUser();
+
   const homepage = getListPage("_index.md");
   const testimonial = getListPage("sections/testimonial.md");
   const callToAction = getListPage("sections/call-to-action.md");
