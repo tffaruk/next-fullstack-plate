@@ -3,12 +3,12 @@ import Admin from "@/model/user.model";
 import bcrypt from "bcrypt";
 import { NextApiResponse } from "next";
 import { NextResponse } from "next/server";
-dbConnect();
+
 export async function POST(req: any, res: NextApiResponse) {
   const salt = process.env.SALT;
 
   try {
-    console.log(req.method);
+    await dbConnect();
     const body = await req.json();
     const user = await Admin.findOne({ email: body.email });
     const hashedPassword = await bcrypt.hash(body.password, Number(salt));
@@ -34,5 +34,25 @@ export async function POST(req: any, res: NextApiResponse) {
     }
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function GET(req: any, res: NextApiResponse) {
+  await dbConnect();
+  const { method } = req;
+  switch (method) {
+    case "GET":
+      try {
+        const userData = await Admin.find({});
+        return NextResponse.json({
+          data: {
+            user: userData,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    default:
+      break;
   }
 }

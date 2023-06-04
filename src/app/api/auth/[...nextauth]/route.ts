@@ -1,10 +1,11 @@
 import { dbConnect } from "@/lib/dbConnect";
 import Admin from "@/model/user.model";
 import bcrypt from "bcryptjs";
+import type { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-export const authoptions = {
+export const authoptions: NextAuthOptions = {
   secret: process.env.NEXT_AUTH_SECRET,
   session: {
     strategy: "jwt" as any,

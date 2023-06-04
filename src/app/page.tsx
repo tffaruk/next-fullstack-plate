@@ -5,9 +5,14 @@ import CallToAction from "@/partials/CallToAction";
 import SeoMeta from "@/partials/SeoMeta";
 import Testimonials from "@/partials/Testimonials";
 import { Button, Feature } from "@/types";
-import { FaCheck } from "react-icons/fa/index.js";
-
-const Home = () => {
+import axios from "axios";
+const getUser = async () => {
+  const res = await axios.get("http://localhost:3000/api/user");
+  return res;
+};
+const Home = async () => {
+  const res = await getUser();
+  console.log(res.data.data.user);
   const homepage = getListPage("_index.md");
   const testimonial = getListPage("sections/testimonial.md");
   const callToAction = getListPage("sections/call-to-action.md");
@@ -52,11 +57,17 @@ const Home = () => {
                 />
               </div>
             )}
+
+            <ul className=" ">
+              {res.data.data.user.map((user: any) => (
+                <li key={user._id}>{user.email}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {features.map((feature, index: number) => (
+      {/* {features.map((feature, index: number) => (
         <section
           key={index}
           className={`section-sm ${index % 2 === 0 && "bg-gradient"}`}
@@ -108,7 +119,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-      ))}
+      ))} */}
 
       <Testimonials data={testimonial} />
       <CallToAction data={callToAction} />
