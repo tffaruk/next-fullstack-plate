@@ -1,20 +1,17 @@
 import ImageFallback from "@/components/ImageFallback";
 import { getListPage } from "@/lib/contentParser";
 import { markdownify } from "@/lib/utils/textConverter";
+import Admin from "@/model/user.model";
 import CallToAction from "@/partials/CallToAction";
 import SeoMeta from "@/partials/SeoMeta";
 import Testimonials from "@/partials/Testimonials";
 import { Button, Feature } from "@/types";
-import axios from "axios";
 const getUser = async () => {
-  const res = await axios.get(
-    "https://next-fullstack-plate.vercel.app/api/user"
-  );
+  const res = await Admin.find({});
   return res;
 };
 const Home = async () => {
   const res = await getUser();
-  console.log(res.data.data.user);
   const homepage = getListPage("_index.md");
   const testimonial = getListPage("sections/testimonial.md");
   const callToAction = getListPage("sections/call-to-action.md");
@@ -61,7 +58,7 @@ const Home = async () => {
             )}
 
             <ul className=" ">
-              {res.data.data.user.map((user: any) => (
+              {res.map((user: any) => (
                 <li key={user._id}>{user.email}</li>
               ))}
             </ul>
