@@ -5,6 +5,8 @@ import CallToAction from "@/partials/CallToAction";
 import SeoMeta from "@/partials/SeoMeta";
 import Testimonials from "@/partials/Testimonials";
 import { Button, Feature } from "@/types";
+import { getServerSession } from "next-auth";
+import { authoptions } from "./api/auth/[...nextauth]/route";
 
 const Home = async () => {
   const homepage = getListPage("_index.md");
@@ -18,7 +20,8 @@ const Home = async () => {
     banner: { title: string; image: string; content?: string; button?: Button };
     features: Feature[];
   } = frontmatter;
-
+  const session = await getServerSession(authoptions);
+  console.log(session, "data");
   return (
     <>
       <SeoMeta />

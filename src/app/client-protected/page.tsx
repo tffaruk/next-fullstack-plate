@@ -4,12 +4,13 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 const ClientProtected = async () => {
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect("/signin?callbackUrl=/client-protected");
-    },
-  });
+  const { data: session } =
+    useSession({
+      required: true,
+      onUnauthenticated() {
+        redirect("/signin?callbackUrl=/client-protected");
+      },
+    }) || {};
 
   return (
     <>

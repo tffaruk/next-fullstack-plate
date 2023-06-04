@@ -5,6 +5,7 @@ import { authoptions } from "../api/auth/[...nextauth]/route";
 
 const ServerProtected = async () => {
   const session = await getServerSession(authoptions);
+
   if (!session) {
     redirect("/signin");
   }
