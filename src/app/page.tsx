@@ -21,7 +21,7 @@ const Home = async () => {
     features: Feature[];
   } = frontmatter;
   const session = await getServerSession(authoptions);
-  console.log(session, "data");
+
   return (
     <>
       <SeoMeta />
