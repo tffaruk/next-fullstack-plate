@@ -1,5 +1,4 @@
 import { dbConnect } from "@/lib/dbConnect";
-import Admin from "@/model/user.model";
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth";
@@ -21,11 +20,16 @@ export const authoptions: NextAuthOptions = {
         await dbConnect();
 
         try {
-          const user = await Admin.findOne({ email: email });
+          // const user = await Admin.findOne({ email: email });
+          const res = await fetch("http://localhost:3000/api/user", {
+            cache: "no-store",
+          });
+          const data = await res.json();
+          const { user } = data.data;
 
-          if (user) {
-            if (await bcrypt.compare(password, user.password)) {
-              return user;
+          if (user[0]) {
+            if (await bcrypt.compare(password, user[0].password)) {
+              return user[0];
             } else {
               throw new Error("Wrong Credentials!");
             }
@@ -53,9 +57,10 @@ export const authoptions: NextAuthOptions = {
       if (token) {
         session.id = token.id;
       }
-      if (token.user) {
-        console.log(token.user);
-        const { name, email: userEmail } = token.user;
+      // console.log(token._doc);
+      if (token._doc) {
+        // console.log(token.user, "user");
+        const { name, email: userEmail } = token;
 
         const sessionData = {
           ...session,
@@ -63,12 +68,14 @@ export const authoptions: NextAuthOptions = {
             ...session.user,
             name: name,
             email: userEmail,
+            data: "check",
           },
           provider: false,
         };
 
         return sessionData;
       } else {
+        // console.log(session);
         return session;
       }
     },

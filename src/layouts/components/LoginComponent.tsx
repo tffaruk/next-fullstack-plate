@@ -1,7 +1,8 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { redirect, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
@@ -10,11 +11,12 @@ const LoginComponent = () => {
     email: "",
     password: "",
   });
-
+  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const { data } = useSession();
   if (data && data.user) {
+    // router.refresh();
     redirect(callbackUrl || "/");
   }
   const handleSubmit = async (e: any) => {

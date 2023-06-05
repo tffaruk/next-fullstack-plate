@@ -10,7 +10,9 @@ const ClientProtected = async () => {
     if (!session) {
       redirect("/signin?callbackUrl=/client-protected");
     }
-  }, [session]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log(session);
   return (
     <>
       <SeoMeta title="Client Protected Page" />
