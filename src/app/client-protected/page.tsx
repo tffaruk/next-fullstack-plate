@@ -2,16 +2,15 @@
 import SeoMeta from "@/partials/SeoMeta";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 const ClientProtected = async () => {
-  const { data: session } =
-    useSession({
-      required: true,
-      onUnauthenticated() {
-        redirect("/signin?callbackUrl=/client-protected");
-      },
-    }) || {};
-
+  const { data: session } = useSession() || {};
+  useEffect(() => {
+    if (!session) {
+      redirect("/signin?callbackUrl=/client-protected");
+    }
+  }, [session]);
   return (
     <>
       <SeoMeta title="Client Protected Page" />

@@ -7,7 +7,7 @@ const ServerProtected = async () => {
   const session = await getServerSession(authoptions);
 
   if (!session) {
-    redirect("/signin");
+    redirect("/signin?callbackUrl=/server-protected");
   }
   return (
     <>
