@@ -1,11 +1,14 @@
 "use client";
 
 import axios from "axios";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 
 const SignupForm = () => {
   const [userInfo, setUserInfo] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -17,6 +20,7 @@ const SignupForm = () => {
 
       if (res.status === 201) {
         setUserInfo({
+          name: "",
           email: "",
           password: "",
         });
@@ -44,6 +48,27 @@ const SignupForm = () => {
                 <div className="mb-4">
                   <label
                     className="mb-2 block text-sm font-bold text-text"
+                    htmlFor="name"
+                  >
+                    Name
+                  </label>
+                  <input
+                    className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-text shadow focus:outline-none"
+                    id="name"
+                    type="name"
+                    placeholder="Enter your name"
+                    value={userInfo.name}
+                    onChange={(e) =>
+                      setUserInfo({
+                        ...userInfo,
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    className="mb-2 block text-sm font-bold text-text"
                     htmlFor="email"
                   >
                     Email
@@ -62,6 +87,7 @@ const SignupForm = () => {
                     }
                   />
                 </div>
+
                 <div className="mb-6">
                   <label
                     className="mb-2 block text-sm font-bold text-text"
@@ -89,8 +115,22 @@ const SignupForm = () => {
                   </button>
                 </div>
               </form>
-              {message && <p className="text-center text-red-500">{message}</p>}
-              <p className="text-center">
+              <div className="text-center">
+                <div className="relative after:absolute after:left-0 after:top-3 after:inline-block  after:h-[1px] after:w-full after:bg-light/30 after:px-2 after:content-['']">
+                  <span className="relative z-20 bg-white px-4">or</span>
+                </div>
+                <button
+                  onClick={() => signIn("google")}
+                  className="btn btn-outline-primary mt-3 flex w-full items-center justify-center "
+                >
+                  <FcGoogle className="mr-2 inline align-middle" /> Sign in with
+                  Google
+                </button>
+              </div>
+              {message && (
+                <p className="text-center  text-red-500">{message}</p>
+              )}
+              <p className="mt-6 text-center">
                 All ready have an account{" "}
                 <Link href="/signin" className="font-medium text-primary">
                   Sign in

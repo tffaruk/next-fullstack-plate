@@ -1,6 +1,7 @@
 import SeoMeta from "@/partials/SeoMeta";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { authoptions } from "../api/auth/[...nextauth]/route";
 
 const ServerProtected = async () => {
@@ -10,7 +11,7 @@ const ServerProtected = async () => {
     redirect("/signin?callbackUrl=/server-protected");
   }
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <SeoMeta title="Server Protected Page" />
       <section className="section-sm">
         <div className="container">
@@ -20,13 +21,15 @@ const ServerProtected = async () => {
                 This is a <span className="text-emerald-500">server-side</span>{" "}
                 protected page
               </h1>
-              <h2 className="mt-4 font-medium">You are logged in as:</h2>
-              <p className="mt-4">{session?.user?.name}</p>
+              <h2 className="mt-4 font-medium">
+                You are logged in as:{" "}
+                <span className="text-emerald-500">{session?.user?.name}</span>
+              </h2>
             </div>
           </div>
         </div>
       </section>
-    </>
+    </Suspense>
   );
 };
 

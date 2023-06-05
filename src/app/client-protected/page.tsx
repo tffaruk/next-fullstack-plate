@@ -22,8 +22,10 @@ const ClientProtected = async () => {
                 This is a <span className="text-emerald-500">client-side</span>{" "}
                 protected page
               </h1>
-              <h2 className="mt-4 font-medium">You are logged in as:</h2>
-              <p className="mt-4">{session?.user?.name}</p>
+              <h2 className="mt-4 font-medium">
+                You are logged in as:{" "}
+                <span className="text-emerald-500">{session?.user?.name}</span>
+              </h2>
             </div>
           </div>
         </div>

@@ -1,4 +1,3 @@
-import { dbConnect } from "@/lib/dbConnect";
 import Admin from "@/model/user.model";
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
@@ -18,7 +17,6 @@ export const authoptions: NextAuthOptions = {
       async authorize(credentials: any, req: any): Promise<any> {
         // Add logic here to look up the user from the credentials supplied
         const { email, password } = credentials;
-        await dbConnect();
 
         try {
           const user = await Admin.findOne({ email: email });
@@ -46,14 +44,31 @@ export const authoptions: NextAuthOptions = {
     signIn: "/signin",
   },
   callbacks: {
-    async jwt({ token }: any) {
-      return token;
+    async jwt({ token, user }: any) {
+      return { ...token, ...user };
     },
     session: async ({ session, token }: any): Promise<any> => {
       if (token) {
         session.id = token.id;
       }
-      return session;
+      if (token.user) {
+        console.log(token.user);
+        const { name, email: userEmail } = token.user;
+
+        const sessionData = {
+          ...session,
+          user: {
+            ...session.user,
+            name: name,
+            email: userEmail,
+          },
+          provider: false,
+        };
+
+        return sessionData;
+      } else {
+        return session;
+      }
     },
   },
 };

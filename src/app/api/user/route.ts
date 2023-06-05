@@ -14,6 +14,7 @@ export async function POST(req: any, res: NextApiResponse) {
     const hashedPassword = await bcrypt.hash(body.password, Number(salt));
     if (!user) {
       const createdUser = await Admin.create({
+        name: body.name,
         email: body.email,
         password: hashedPassword,
       });

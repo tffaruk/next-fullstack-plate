@@ -1,6 +1,10 @@
 import { User_Info } from "@/types/user.type";
 import { Schema, model, models } from "mongoose";
 const userSchema = new Schema<User_Info>({
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
