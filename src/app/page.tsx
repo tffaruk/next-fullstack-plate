@@ -5,13 +5,7 @@ import CallToAction from "@/partials/CallToAction";
 import SeoMeta from "@/partials/SeoMeta";
 import Testimonials from "@/partials/Testimonials";
 import { Button, Feature } from "@/types";
-const getData = async () => {
-  const res = await fetch("http://localhost:3000/api/user", {
-    cache: "no-store",
-  });
-  const data = await res.json();
-  return data;
-};
+
 const Home = async () => {
   const homepage = getListPage("_index.md");
   const testimonial = getListPage("sections/testimonial.md");
@@ -24,8 +18,7 @@ const Home = async () => {
     banner: { title: string; image: string; content?: string; button?: Button };
     features: Feature[];
   } = frontmatter;
-  const data = await getData();
-  console.log(data);
+
   return (
     <>
       <SeoMeta />
